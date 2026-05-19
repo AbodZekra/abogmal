@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>سوبر ماركت أبو جمال</title>
-  <link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/abogmal/manifest.json">
   <meta name="theme-color" content="#1e4a2f">
   <!-- Google Fonts لخطوط عربية أنيقة -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -956,5 +956,32 @@
       renderProducts();
     })();
   </script>
+  <script>
+  let deferredPrompt;
+  
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // إظهار بانر التثبيت تلقائياً
+    setTimeout(() => {
+      if (deferredPrompt) {
+        const install = confirm('📱 تثبيت تطبيق أبو جمال على هاتفك؟');
+        if (install) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((result) => {
+            console.log(result.outcome === 'accepted' ? '✅ تم التثبيت' : '❌ تم الإلغاء');
+          });
+          deferredPrompt = null;
+        }
+      }
+    }, 2000);
+  });
+  
+  // تسجيل Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/abogmal/service-worker.js');
+  }
+</script>
 </body>
 </html>
