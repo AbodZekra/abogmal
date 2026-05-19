@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>سوبر ماركت أبو جمال</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1e4a2f">
+  <!-- Google Fonts لخطوط عربية أنيقة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 للأيقونات الاحترافية -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f4f9f4;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+      direction: rtl;
+      padding: 12px;
+    }
+
+    /* الدوائر الخلفية الكبيرة */
+    .bg-circle {
+      position: fixed;
+      border-radius: 90%;
+      background: #1e4a2f;
+      opacity: 1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .circle-left {
+      width: 70vw;
+      height: 70vw;
+      max-width: 600px;
+      max-height: 600px;
+      top: -50%;
+      left: -50%;
+      background: #1e4a2f;
+    }
+
+    .circle-right {
+      width: 400vw;
+      height: 400vw;
+      max-width: 500px;
+      max-height: 500px;
+      bottom: -10%;
+      right: -50%;
+      background: #1e4a2f;
+    }
+
+    /* الحاوية الرئيسية - زجاجية أنيقة */
+    .app-container {
+      width: 100%;
+      max-width: 550px;
+      background: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      background: #ffffff00;
+      border-radius: 48px;
+      box-shadow: 0 30px 50px rgba(0, 40, 20, 0.15), 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 24px 20px 30px;
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(34, 94, 51, 0.18);
+      display: flex;
+      flex-direction: column;
+      min-height: 90vh;
+      transition: all 0.2s ease;
+    }
+
+    /* رأس التطبيق */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 0 6px;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-title i {
+      font-size: 2.2rem;
+      color: #1e4a2f;
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+    }
+
+    .header-title h1 {
+      font-family: 'El Messiri', sans-serif;
+      font-weight: 700;
+      font-size: 1.9rem;
+      color: #1e3b2a;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .add-btn {
+      background: #1e4a2f;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 12px 20px rgba(30, 74, 47, 0.3);
+      transition: all 0.25s;
+      background: linear-gradient(135deg, #235f38, #163b23);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .add-btn:active {
+      transform: scale(0.92);
+      box-shadow: 0 6px 12px rgba(30, 74, 47, 0.4);
+    }
+
+    /* شريط البحث */
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #1e4a2f;
+      font-size: 1.2rem;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 16px 50px 16px 20px;
+      border: none;
+      border-radius: 40px;
+      background: #f0f7f1;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1a3323;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.03), 0 4px 12px rgba(30,74,47,0.08);
+      transition: all 0.2s;
+      border: 1px solid #d9ecdb;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: #1e4a2f;
+      box-shadow: 0 0 0 3px rgba(30,74,47,0.15), inset 0 1px 6px rgba(0,0,0,0.03);
+      background: #ffffff;
+    }
+
+    /* قائمة المنتجات */
+    .products-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 4px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 55vh;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #6f8f77;
+      padding: 50px 20px;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .empty-state i {
+      font-size: 3.5rem;
+      opacity: 0.5;
+      color: #1e4a2f;
+    }
+
+    /* كارد المنتج */
+    .product-card {
+      background: white;
+      border-radius: 28px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 18px rgba(0, 30, 10, 0.06);
+      border: 1px solid rgba(30, 74, 47, 0.12);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: #ffffff;
+      backdrop-filter: blur(4px);
+    }
+
+    .product-card:active {
+      transform: scale(0.98);
+      background: #f9fff9;
+      box-shadow: 0 6px 14px rgba(20, 70, 30, 0.12);
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #1d3523;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .product-name i {
+      color: #1e4a2f;
+      font-size: 1.1rem;
+    }
+
+    .price-row {
+      display: flex;
+      gap: 18px;
+      font-size: 0.9rem;
+      color: #3b5e42;
+      font-weight: 500;
+    }
+
+    .buy-price span, .sell-price span {
+      font-weight: 700;
+      color: #0f331b;
+    }
+
+    .card-arrow i {
+      color: #1e4a2f;
+      font-size: 1.4rem;
+      opacity: 0.7;
+    }
+
+    /* مودال عام */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 25, 15, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.25s ease;
+      padding: 15px;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 44px;
+      padding: 28px 22px;
+      box-shadow: 0 35px 50px rgba(0,0,0,0.25);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: #ffffff;
+    }
+
+    .active .modal {
+      transform: scale(1);
+    }
+
+    .modal h2 {
+      font-family: 'El Messiri', sans-serif;
+      color: #1e3b2a;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.7rem;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1e4a2f;
+      font-size: 0.95rem;
+    }
+
+    .input-group input, .input-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 30px;
+      border: 1px solid #cbdcd0;
+      background: #f8fbf8;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus, .input-group textarea:focus {
+      border-color: #1e4a2f;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(30,74,47,0.2);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 15px;
+      border-radius: 30px;
+      font-weight: 700;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .btn-save {
+      background: #1e4a2f;
+      color: white;
+    }
+
+    .btn-save:active {
+      background: #163b23;
+      transform: scale(0.96);
+    }
+
+    .btn-cancel {
+      background: #e9f2ea;
+      color: #1e3b2a;
+    }
+
+    .btn-cancel:active {
+      background: #d4e5d6;
+      transform: scale(0.96);
+    }
+
+    /* مودال التفاصيل */
+    .detail-content {
+      text-align: center;
+    }
+
+    .detail-icon {
+      font-size: 3rem;
+      color: #1e4a2f;
+      margin-bottom: 10px;
+    }
+
+    .detail-name {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #1d3523;
+    }
+
+    .detail-prices {
+      background: #f0f7f1;
+      border-radius: 30px;
+      padding: 18px;
+      margin: 20px 0;
+    }
+
+    .note-box {
+      background: #fffaf0;
+      border-radius: 24px;
+      padding: 14px;
+      margin: 16px 0;
+    }
+
+    /* ============= موديل الحذف المخصص ============= */
+    .delete-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+      padding: 20px;
+    }
+
+    .delete-modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .delete-dialog {
+      background: white;
+      border-radius: 36px;
+      padding: 32px 24px 28px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      transform: scale(0.8) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .active .delete-dialog {
+      transform: scale(1) translateY(0);
+    }
+
+    /* أيقونة التحذير المثلثة */
+    .warning-icon-wrapper {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #fff5f5, #ffe8e8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulseWarning 2s infinite;
+    }
+
+    @keyframes pulseWarning {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .warning-icon-wrapper i {
+      font-size: 2.8rem;
+      color: #e74c3c;
+      filter: drop-shadow(0 4px 6px rgba(231, 76, 60, 0.3));
+    }
+
+    .delete-dialog h3 {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1.7rem;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .delete-dialog .delete-message {
+      color: #7f8c8d;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .delete-dialog .product-name-highlight {
+      font-weight: 700;
+      color: #1e4a2f;
+      background: #f0f7f1;
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 8px 0 16px;
+      font-size: 1.05rem;
+    }
+
+    .delete-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .btn-delete-cancel {
+      flex: 1;
+      padding: 14px;
+      border-radius: 30px;
+      border: 2px solid #dcdde1;
+      background: white;
+      color: #636e72;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .btn-delete-cancel:hover {
+      background: #f8f9fa;
+      border-color: #b2bec3;
+    }
+
+    .btn-delete-cancel:active {
+      transform: scale(0.95);
+      background: #f1f2f6;
+    }
+
+    .btn-delete-confirm {
+      flex: 1;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(231, 76, 60, 0.35);
+      transition: all 0.2s;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .btn-delete-confirm:hover {
+      box-shadow: 0 12px 25px rgba(231, 76, 60, 0.45);
+    }
+
+    .btn-delete-confirm:active {
+      transform: scale(0.95);
+      background: linear-gradient(135deg, #c0392b, #a93226);
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .delete-dialog {
+        padding: 24px 18px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-circle circle-right"></div>
+
+  <div class="app-container" id="appContainer">
+    <header class="app-header">
+      <div class="header-title">
+        <i class="fas fa-store-alt"></i>
+        <h1>أبو جمال</h1>
+      </div>
+      <button class="add-btn" id="openAddModalBtn"><i class="fas fa-plus"></i></button>
+    </header>
+
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="ابحث عن منتج..." autocomplete="off">
+    </div>
+
+    <div class="products-list" id="productsList">
+      <div class="empty-state">
+        <i class="fas fa-box-open"></i>
+        <p>لا توجد منتجات مضافة بعد</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال إضافة/تعديل -->
+  <div class="modal-overlay" id="formModal">
+    <div class="modal">
+      <h2 id="modalTitle"><i class="fas fa-plus-circle"></i> إضافة منتج</h2>
+      <div class="input-group">
+        <label>اسم المنتج</label>
+        <input type="text" id="productName" placeholder="مثلاً: أرز بسمتي">
+      </div>
+      <div class="input-group">
+        <label>سعر الشراء</label>
+        <input type="number" id="buyPrice" placeholder="0.00" step="0.01">
+      </div>
+      <div class="input-group">
+        <label>سعر البيع</label>
+        <input type="number" id="sellPrice" placeholder="0.00" step="0.01">
+      </div>
+      <div class="input-group">
+        <label>ملاحظات</label>
+        <textarea id="notes" rows="2" placeholder="تفاصيل إضافية..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" id="cancelFormBtn">إلغاء</button>
+        <button class="btn btn-save" id="saveProductBtn">حفظ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال عرض التفاصيل -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal">
+      <div class="detail-content">
+        <i class="fas fa-cubes detail-icon"></i>
+        <h2 class="detail-name" id="detailName">اسم المنتج</h2>
+        <div class="detail-prices">
+          <div style="display: flex; justify-content: space-between; margin:8px 0;"><span>سعر الشراء:</span> <strong id="detailBuy">0</strong></div>
+          <div style="display: flex; justify-content: space-between; margin:8px 0;"><span>سعر البيع:</span> <strong id="detailSell">0</strong></div>
+        </div>
+        <div class="note-box">
+          <i class="fas fa-sticky-note"></i> <span id="detailNotes">لا توجد ملاحظات</span>
+        </div>
+        <div class="modal-actions" style="margin-top: 24px;">
+          <button class="btn btn-cancel" id="deleteProductBtn"><i class="fas fa-trash"></i> حذف</button>
+          <button class="btn btn-save" id="editFromDetailBtn"><i class="fas fa-pen"></i> تعديل</button>
+        </div>
+        <button class="btn btn-cancel" style="margin-top: 12px; width:100%;" id="closeDetailBtn">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= موديل تأكيد الحذف المخصص ============= -->
+  <div class="delete-modal-overlay" id="deleteConfirmModal">
+    <div class="delete-dialog">
+      <div class="warning-icon-wrapper">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>تأكيد الحذف</h3>
+      <p class="delete-message">هل أنت متأكد من حذف هذا المنتج؟</p>
+      <div class="product-name-highlight" id="deleteProductName">---</div>
+      <p class="delete-message" style="font-size: 0.85rem; color: #b2bec3;">لا يمكن التراجع عن هذا الإجراء</p>
+      <div class="delete-actions">
+        <button class="btn-delete-cancel" id="cancelDeleteBtn">إلغاء</button>
+        <button class="btn-delete-confirm" id="confirmDeleteBtn">
+          <i class="fas fa-trash-alt" style="margin-left: 6px;"></i> حذف
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // قاعدة البيانات المحلية
+      const STORAGE_KEY = 'abujamal_products';
+      let products = [];
+      
+      // عناصر DOM
+      const productsListEl = document.getElementById('productsList');
+      const searchInput = document.getElementById('searchInput');
+      const formModal = document.getElementById('formModal');
+      const detailModal = document.getElementById('detailModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const productNameInput = document.getElementById('productName');
+      const buyPriceInput = document.getElementById('buyPrice');
+      const sellPriceInput = document.getElementById('sellPrice');
+      const notesInput = document.getElementById('notes');
+      const saveProductBtn = document.getElementById('saveProductBtn');
+      const cancelFormBtn = document.getElementById('cancelFormBtn');
+      const openAddModalBtn = document.getElementById('openAddModalBtn');
+      
+      // تفاصيل
+      const detailName = document.getElementById('detailName');
+      const detailBuy = document.getElementById('detailBuy');
+      const detailSell = document.getElementById('detailSell');
+      const detailNotes = document.getElementById('detailNotes');
+      const closeDetailBtn = document.getElementById('closeDetailBtn');
+      const editFromDetailBtn = document.getElementById('editFromDetailBtn');
+      const deleteProductBtn = document.getElementById('deleteProductBtn');
+      
+      // موديل الحذف المخصص
+      const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+      const deleteProductName = document.getElementById('deleteProductName');
+      const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+      const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+      
+      let currentEditId = null;
+      let currentDetailProduct = null;
+      let pendingDeleteProduct = null; // المنتج المنتظر تأكيد حذفه
+
+      // تحميل البيانات من localStorage
+      function loadProducts() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          try {
+            products = JSON.parse(stored);
+          } catch (e) {
+            products = [];
+          }
+        } else {
+          products = [];
+        }
+      }
+
+      // حفظ في localStorage
+      function saveToStorage() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+      }
+
+      // عرض المنتجات بناءً على البحث
+      function renderProducts(filterText = '') {
+        const searchTerm = filterText.trim().toLowerCase();
+        const filtered = searchTerm === '' 
+          ? products 
+          : products.filter(p => p.name.toLowerCase().includes(searchTerm));
+        
+        if (filtered.length === 0) {
+          productsListEl.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-search"></i>
+              <p>${products.length === 0 ? 'لا توجد منتجات، أضف الأول!' : 'لا يوجد منتجات مطابقة'}</p>
+            </div>
+          `;
+          return;
+        }
+
+        productsListEl.innerHTML = filtered.map(product => {
+          return `
+            <div class="product-card" data-id="${product.id}">
+              <div class="product-info">
+                <div class="product-name">
+                  <i class="fas fa-tag"></i> ${escapeHtml(product.name)}
+                </div>
+                <div class="price-row">
+                  <div class="buy-price"><span>شراء:</span> ${formatPrice(product.buyPrice)}</div>
+                  <div class="sell-price"><span>بيع:</span> ${formatPrice(product.sellPrice)}</div>
+                </div>
+              </div>
+              <div class="card-arrow">
+                <i class="fas fa-chevron-left"></i>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // ربط الأحداث بالكروت
+        document.querySelectorAll('.product-card').forEach(card => {
+          card.addEventListener('click', (e) => {
+            const id = card.getAttribute('data-id');
+            openDetailModal(id);
+          });
+        });
+      }
+
+      function escapeHtml(text) {
+        return String(text).replace(/[&<>"]/g, function(m) {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          if (m === '"') return '&quot;';
+          return m;
+        });
+      }
+
+      function formatPrice(value) {
+        const num = parseFloat(value);
+        return isNaN(num) ? '0.00' : num.toFixed(2);
+      }
+
+      // فتح مودال الإضافة
+      function openAddModal() {
+        currentEditId = null;
+        modalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة منتج';
+        productNameInput.value = '';
+        buyPriceInput.value = '';
+        sellPriceInput.value = '';
+        notesInput.value = '';
+        formModal.classList.add('active');
+      }
+
+      // فتح مودال التعديل
+      function openEditModal(productId) {
+        const product = products.find(p => p.id == productId);
+        if (!product) return;
+        currentEditId = product.id;
+        modalTitle.innerHTML = '<i class="fas fa-edit"></i> تعديل المنتج';
+        productNameInput.value = product.name || '';
+        buyPriceInput.value = product.buyPrice ?? '';
+        sellPriceInput.value = product.sellPrice ?? '';
+        notesInput.value = product.notes || '';
+        formModal.classList.add('active');
+      }
+
+      // إغلاق مودال الفورم
+      function closeFormModal() {
+        formModal.classList.remove('active');
+        currentEditId = null;
+      }
+
+      // حفظ المنتج (إضافة أو تعديل)
+      function saveProduct() {
+        const name = productNameInput.value.trim();
+        if (!name) {
+          alert('يرجى إدخال اسم المنتج');
+          return;
+        }
+        const buyPrice = parseFloat(buyPriceInput.value) || 0;
+        const sellPrice = parseFloat(sellPriceInput.value) || 0;
+        const notes = notesInput.value.trim();
+
+        if (currentEditId) {
+          // تعديل موجود
+          const index = products.findIndex(p => p.id == currentEditId);
+          if (index !== -1) {
+            products[index].name = name;
+            products[index].buyPrice = buyPrice;
+            products[index].sellPrice = sellPrice;
+            products[index].notes = notes;
+          }
+        } else {
+          // إضافة جديد
+          const newProduct = {
+            id: Date.now(),
+            name,
+            buyPrice,
+            sellPrice,
+            notes,
+          };
+          products.push(newProduct);
+        }
+
+        saveToStorage();
+        closeFormModal();
+        renderProducts(searchInput.value);
+        // إذا كان مودال التفاصيل مفتوحاً لنفس المنتج نحدثه
+        if (currentDetailProduct && currentEditId && currentDetailProduct.id == currentEditId) {
+          const updated = products.find(p => p.id == currentEditId);
+          if (updated) updateDetailModalContent(updated);
+        }
+      }
+
+      // فتح مودال التفاصيل
+      function openDetailModal(productId) {
+        const product = products.find(p => p.id == productId);
+        if (!product) return;
+        currentDetailProduct = product;
+        updateDetailModalContent(product);
+        detailModal.classList.add('active');
+      }
+
+      function updateDetailModalContent(product) {
+        detailName.textContent = product.name;
+        detailBuy.textContent = formatPrice(product.buyPrice);
+        detailSell.textContent = formatPrice(product.sellPrice);
+        detailNotes.textContent = product.notes || 'لا توجد ملاحظات';
+      }
+
+      function closeDetailModal() {
+        detailModal.classList.remove('active');
+        currentDetailProduct = null;
+      }
+
+      // ============= دوال موديل الحذف المخصص =============
+      
+      // فتح موديل تأكيد الحذف
+      function openDeleteConfirmModal(product) {
+        pendingDeleteProduct = product;
+        deleteProductName.textContent = product.name;
+        deleteConfirmModal.classList.add('active');
+      }
+
+      // إغلاق موديل الحذف
+      function closeDeleteConfirmModal() {
+        deleteConfirmModal.classList.remove('active');
+        pendingDeleteProduct = null;
+      }
+
+      // تنفيذ الحذف بعد التأكيد
+      function executeDelete() {
+        if (!pendingDeleteProduct) return;
+        
+        products = products.filter(p => p.id != pendingDeleteProduct.id);
+        saveToStorage();
+        
+        // إغلاق كل المودالات
+        closeDeleteConfirmModal();
+        closeDetailModal();
+        
+        // تحديث القائمة
+        renderProducts(searchInput.value);
+      }
+
+      // طلب حذف المنتج (من داخل التفاصيل)
+      function requestDeleteProduct() {
+        if (!currentDetailProduct) return;
+        openDeleteConfirmModal(currentDetailProduct);
+      }
+
+      // الانتقال من التفاصيل إلى التعديل
+      function editFromDetail() {
+        if (!currentDetailProduct) return;
+        const id = currentDetailProduct.id;
+        closeDetailModal();
+        openEditModal(id);
+      }
+
+      // أحداث المستمعين
+      openAddModalBtn.addEventListener('click', openAddModal);
+      cancelFormBtn.addEventListener('click', closeFormModal);
+      saveProductBtn.addEventListener('click', saveProduct);
+      
+      closeDetailBtn.addEventListener('click', closeDetailModal);
+      editFromDetailBtn.addEventListener('click', editFromDetail);
+      deleteProductBtn.addEventListener('click', requestDeleteProduct);
+      
+      // أحداث موديل الحذف
+      cancelDeleteBtn.addEventListener('click', closeDeleteConfirmModal);
+      confirmDeleteBtn.addEventListener('click', executeDelete);
+      
+      searchInput.addEventListener('input', (e) => {
+        renderProducts(e.target.value);
+      });
+
+      // إغلاق المودالات عند النقر خارج المحتوى
+      formModal.addEventListener('click', (e) => {
+        if (e.target === formModal) closeFormModal();
+      });
+      detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) closeDetailModal();
+      });
+      deleteConfirmModal.addEventListener('click', (e) => {
+        if (e.target === deleteConfirmModal) closeDeleteConfirmModal();
+      });
+
+      // منع إغلاق المودال عند النقر على محتواه
+      document.querySelector('.delete-dialog').addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // دعم زر Escape لإغلاق موديل الحذف
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && deleteConfirmModal.classList.contains('active')) {
+          closeDeleteConfirmModal();
+        }
+      });
+
+      // التهيئة الأولى
+      loadProducts();
+      renderProducts();
+    })();
+  </script>
+</body>
+</html>
